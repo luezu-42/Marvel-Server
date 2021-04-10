@@ -1,25 +1,25 @@
 const Sequelize = require('sequelize');
 const database = require('../config/database');
+const User = require('./user');
 
-const User = database.define('user', {
-  userId: {
+const Comic = database.define('comic', {
+  id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
   },
-  name: {
-    type: Sequelize.STRING,
-    allowNull: false,
+  digitalId: {
+    type: Sequelize.INTEGER,
+    autoIncrement: false,
   },
-  password: {
+  title: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
-  email: {
+  thumbnail: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
 });
+Comic.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = User;
+module.exports = Comic;

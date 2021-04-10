@@ -1,11 +1,11 @@
-const express = require('express');
+const app = require('./app');
+require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
-const app = express();
+const port = process.env.PORT;
 
-app.get('/', (req, res) => res.send({ hello: 'World' }));
-
-app.listen(PORT, () => {
+app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log('server on');
 });
+
+module.exports = app;
