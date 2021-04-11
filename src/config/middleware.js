@@ -3,8 +3,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const verifyJWT = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+const verifyJWT = async (req, res, next) => {
+  const token = await req.headers['x-access-token'];
   if (!token) {
     res.status(401).json({ auth: false, message: 'No token provided' });
   }
