@@ -10,6 +10,7 @@ const jwtDecode = require('jwt-decode');
 const {
   userLogin,
   userRegister,
+  userUpdate,
 } = require('../models/validateModel/user.schema');
 const User = require('../models/user');
 const auth = require('../config/middleware');
@@ -80,6 +81,7 @@ app.post('/login', async (req, res) => {
   jwt.sign(
     {
       id: emailValidate[0].userId,
+      name: emailValidate[0].name,
       email: emailValidate[0].email,
     },
     process.env.JWTS,
@@ -112,16 +114,14 @@ app.delete('/delete', auth, async (req, res) => {
 });
 
 app.patch('/update', auth, async (req, res) => {
-  const { name, email, password, repeatPassword } = req.body;
+  const { name, email } = req.body;
   const token = req.headers['x-access-token'];
 
   const decode = jwtDecode(token);
 
-  const { error } = await userRegister.validate({
+  const { error } = await userUpdate.validate({
     name,
     email,
-    password,
-    repeatPassword,
   });
 
   if (error) {
@@ -133,9 +133,6 @@ app.patch('/update', auth, async (req, res) => {
 
     updateUser.name = name;
     updateUser.email = email;
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-    updateUser.password = hash;
     await updateUser.save();
     return res.status(200).json({ msg: 'User deleted!' });
   } catch (err) {
