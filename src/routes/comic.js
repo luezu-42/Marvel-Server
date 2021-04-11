@@ -14,7 +14,7 @@ app.get('/', auth, async (req, res) => {
 
   const decode = jwtDecode(token);
 
-  const allComics = Comic.findAll({
+  const allComics = await Comic.findAll({
     where: {
       userId: decode.id,
     },
@@ -32,7 +32,7 @@ app.post('/', auth, async (req, res) => {
   const decode = jwtDecode(token);
   const { digitalId, title, thumbnail } = req.body;
 
-  const response = Comic.findAll({
+  const response = await Comic.findAll({
     where: {
       digitalId,
     },

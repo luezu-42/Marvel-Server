@@ -14,15 +14,13 @@ app.get('/', auth, async (req, res) => {
 
   const decode = jwtDecode(token);
 
-  const allCharacters = Character.findAll({
+  const allCharacters = await Character.findAll({
     where: {
       userId: decode.id,
     },
   });
 
-  return res.status(200).json({
-    allCharacters,
-  });
+  return res.status(200).json(allCharacters);
 });
 
 // eslint-disable-next-line no-unused-vars
@@ -32,7 +30,7 @@ app.post('/', auth, async (req, res) => {
   const decode = jwtDecode(token);
   const { digitalId, name, thumbnail } = req.body;
 
-  const response = Character.findAll({
+  const response = await Character.findAll({
     where: {
       digitalId,
     },
